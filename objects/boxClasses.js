@@ -1,0 +1,83 @@
+function box_construct(_width,_height,_color){
+	var m=new PIXI.Graphics();
+	m.beginFill(_color);
+	m.drawRect(0,0,_width,_height);
+	m.update=function (){box_update(m)};
+	m.hitTest=function(_box2){return box_hitTest(m,_box2)};
+	m.hitTestAndStop=function(_box2){box_hitTestAndStop(m,_box2)};
+	m.hitTestBorders=function(_borders){return box_hitBordersAndStop(m,_borders)};
+	m.pullTo=function(_x,_y){box_pullTo(m,_x,_y)}
+	m.bonded=null;
+	return m;
+}
+
+function box_gameBox(_color=0x0000ff){
+	var m=box_construct(TILE_WIDTH,TILE_WIDTH,_color);
+	m.vX=0;
+	m.vY=0;
+	return m;
+}
+
+function box_obstacleBox(_width,_color=0xff0000){
+	var m=box_construct(_width,TILE_HEIGHT,_color);
+	m.y=stageBorders.top-m.height;
+	m.vX=0;
+	m.vY=0;
+
+	return m;
+}
+
+function box_update(_box){
+	_box.x+=_box.vX;
+	_box.y+=_box.vY;
+	_box.vX*=PHYSICS_FRICTION;
+	_box.vY*=PHYSICS_FRICTION;
+}
+
+function box_hitTest(_box1,_box2){
+	return collision_getBasic(_box1,_box2);
+}
+
+function box_hitTestAndStop(_box1,_box2){
+	var _collision=collision_getBasic(_box1,_box2);
+	
+	if (_collision!=null){
+		switch(_collision.direction){
+			case 0:_box1.x-=_collision.xOverlap; break;
+			case 1:_box1.y-=_collision.yOverlap; break;
+			case 2:_box1.x+=_collision.xOverlap; break;
+			case 3:_box1.y+=_collision.yOverlap; break;
+		}
+		_box1.bonded=_box2;
+		_box2.bonded=_box1;
+	}else{
+		_box1.bonded=null;
+		_box2.bonded=null;
+	}
+}
+
+function box_hitBordersAndStop(_box,_borders){
+	var _collision=collision_getBorder(_box,_borders);
+//	trace("A");
+	if (_collision!=null){
+	//	trace("B");
+		switch(_collision.direction){
+			case 0:_box.x-=_collision.xOverlap; break;
+			case 1:_box.y-=_collision.yOverlap; break;
+			case 2:_box.x+=_collision.xOverlap; break;
+			case 3:_box.y+=_collision.yOverlap; break;
+		}
+	}
+	return _collision;
+}
+
+function box_pullTo(_box,_x,_y){
+	_box.vX+=PHYSICS_ACCEL*(_x-_box.x-_box.width/2);
+	_box.vY+=PHYSICS_ACCEL*(_y-_box.y-_box.height/2);
+
+	_box.vX=Math.min(PHYSICS_MAX_V_X,Math.max(-PHYSICS_MAX_V_X,_box.vX));
+	_box.vY=Math.min(PHYSICS_MAX_V_Y,Math.max(-PHYSICS_MAX_V_Y,_box.vY));
+}
+
+
+
