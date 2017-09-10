@@ -52,7 +52,7 @@ function resetMouse(){
 }
 function onMouseDown(e){
 	var mouseObject=mouseObject_constructor();
-	mouseObject.id=e.pointerID;
+	mouseObject.id=e.pointerId;
 	mouseObject.down=true;
 	if (e.x<stageBorders.right/2){
 		mouseObject.key="a";
@@ -66,13 +66,13 @@ function onMouseDown(e){
 	mouseObjects.push(mouseObject);
 	mouse.down=true;
 	//trace(e.target.cursor=="pointer");
-	traceProperties(e);
-	trace(e.type);
+//	traceProperties(e);
+//	trace(e.type);
 }
 
 function onMouseUp(e){
 	for (var i=0;i<mouseObjects.length;i+=1){
-		if (mouseObjects[i].id==e.pointerID){
+		if (mouseObjects[i].id==e.pointerId){
 			onKeyUp(mouseObjects[i]);
 			mouseObjects.splice(i,1);
 			return;
