@@ -9,14 +9,16 @@ var scoreCount;
 
 var game_drag;
 var game_drag_offX;
-
+var starfield;
 
 
 //== Initialize Game Elements==\\
 function game_init(){
-	box1=box_gameBox(0x0000ff);
-	background=box_construct(stageBorders.right,stageBorders.bot,0x060606);
+	box1=box_gameBox();
 
+	background=box_construct(stageBorders.right,stageBorders.bot,0x060606);
+	//background=ImageBitmap.createImageBitmap();
+	starfield=starfield_construct({width:stageBorders.right,height:stageBorders.bot});
 	score=new PIXI.Text("Something",{
 			fill:"0xffffff"
 		});
@@ -24,6 +26,8 @@ function game_init(){
 	obstacles=new Array();
 
 	app.stage.addChild(background);
+	app.stage.addChild(starfield);
+
 	app.stage.addChild(box1);
 	app.stage.addChild(score);
 
@@ -41,6 +45,7 @@ function restartGame(){
 function startGame(){
 	box1.y=stageBorders.bot*3/4;
 	box1.x=stageBorders.right/2-box1.width/2;
+	box1.visible=true;
 	running=true;
 	obstacleSpeed=OBSTACLE_SPEED_START;
 	spawnTick=OBSTACLE_SPAWN;
@@ -53,7 +58,8 @@ function startGame(){
 function game_lose(){
 	running=false;
 	app.stage.addChild(window_construct_lose(startGame));
-	firework_constructor(box1.x+box1.width/2,box1.y+box1.height/2);
+	box1.visible=false;
+	firework_constructor({x:box1.x+box1.width/2,y:box1.y+box1.height/2,color:0x3366ff});
 }
 
 //==Primary Game Loop==\\
@@ -64,12 +70,14 @@ function game_onTick(){
 	
 	game_tickSpawner(obstacleSpeed);
 	game_updateScore(obstacleSpeed);
-	game_updateSprites(obstacleSpeed);	
+	game_updateSprites(obstacleSpeed);
+	starfield.tick(obstacleSpeed);
 }
 
 function game_updateSprites(_tick){
-	box1.pullTo(mouse.global.x,DRIFT_TO_Y);
+	box1.pullTo(mouse.x,DRIFT_TO_Y);
 	box1.update();
+	game_makeTrail(box1);
 
 	for (var i=0;i<obstacles.length;i+=1){
 		obstacles[i].y+=obstacleSpeed;
@@ -89,12 +97,24 @@ function game_updateSprites(_tick){
 
 	if (game_drag!=null){
 
-		//game_drag.x=mouse.global.x+game_drag_offX;
-		game_drag.vX+=PHYSICS_OBS_ACCEL*(mouse.global.x+game_drag_offX-game_drag.x);
+		//game_drag.x=mouse.x+game_drag_offX;
+		game_drag.vX+=PHYSICS_OBS_ACCEL*(mouse.x+game_drag_offX-game_drag.x);
 		game_drag.vX=Math.min(PHYSICS_OBS_MAX_V,Math.max(-PHYSICS_OBS_MAX_V,game_drag.vX));
 
 		if (!mouseDown) game_drag=null;
 	}
+}
+
+function game_makeTrail(_obj){
+	var _tColor=0x33+Math.floor(0x66*Math.random());
+	firework_constructor({
+		x:_obj.x+_obj.width/2,
+		y:_obj.y+_obj.height,
+		numParts:1,
+		startVY:-1,
+		fade:0.05,
+		color:0x0000ff+_tColor*0x000100+_tColor*0x010000,
+	});
 }
 
 function game_updateScore(_tick){
@@ -142,8 +162,8 @@ function game_removeObstacle(i){
 function game_makeObstacleDraggable(_obstacle){
 	_obstacle.interactive=true;
 	_obstacle.buttonMode=true;
-	_obstacle.on("mousedown",function(){game_drag=_obstacle;game_drag_offX=game_drag.x-mouse.global.x;})
-	_obstacle.on("mouseup",function(){if (game_drag===_obstacle) game_drag=null})
+	_obstacle.on("pointerdown",function(){game_drag=_obstacle;game_drag_offX=game_drag.x-mouse.x;})
+	_obstacle.on("pointerup",function(){if (game_drag===_obstacle) game_drag=null})
 }
 
 function game_tilesToPixels(i){

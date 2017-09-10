@@ -22,7 +22,7 @@ function uiElement_constructor(_properties){
 	if (_properties.clickFunction!=null){
 		m.interactive=true;
 		m.clickFunction=_properties.clickFunction;
-		m.on("mousedown",m.clickFunction);
+		m.on("pointerdown",m.clickFunction);
 	}
 	if (_properties.x!=null) m.x=_properties.x;
 	if (_properties.y!=null) m.y=_properties.y;

@@ -1,7 +1,12 @@
 function box_construct(_width,_height,_color){
-	var m=new PIXI.Graphics();
+	var m=box_template();
 	m.beginFill(_color);
 	m.drawRect(0,0,_width,_height);
+	return m;
+}
+
+function box_template(){
+	var m=new PIXI.Graphics();
 	m.update=function (){box_update(m)};
 	m.hitTest=function(_box2){return box_hitTest(m,_box2)};
 	m.hitTestAndStop=function(_box2){box_hitTestAndStop(m,_box2)};
@@ -11,15 +16,24 @@ function box_construct(_width,_height,_color){
 	return m;
 }
 
-function box_gameBox(_color=0x0000ff){
-	var m=box_construct(TILE_WIDTH,TILE_WIDTH,_color);
+function box_gameBox(_color=0x3366ff){
+	var m=box_template();
+	m.lineStyle(3,_color);
+	m.beginFill(_color,0.15);
+	m.drawCircle(TILE_WIDTH/2,TILE_WIDTH/2,TILE_WIDTH/2);
+	//m.drawCircle(TILE_WIDTH/4,TILE_WIDTH/4,TILE_WIDTH/2,TILE_WIDTH/2);
 	m.vX=0;
 	m.vY=0;
 	return m;
 }
 
 function box_obstacleBox(_width,_color=0xff0000){
-	var m=box_construct(_width,TILE_HEIGHT,_color);
+	var m=box_template();
+	//var m=box_construct(_width,TILE_HEIGHT,_color);
+	m.lineStyle(2,_color);
+	m.beginFill(_color,0.15);
+	m.drawRoundedRect(0,0,_width,TILE_HEIGHT,7);
+	//drawRoundedRect(_x,_y,_width,_height,_radius);
 	m.y=stageBorders.top-m.height;
 	m.vX=0;
 	m.vY=0;
