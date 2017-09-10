@@ -77,7 +77,7 @@ function game_onTick(){
 
 function game_updateMovement(_tick){
 	//box1.pullTo(mouse.x,DRIFT_TO_Y); // Mouse Controls
-	if (interactionMode=="mobile"){
+	/*if (interactionMode=="mobile"){
 		if (mouse.down){
 			if (mouse.x<stageBorders.right/2){
 				box1.vX-=PHYSICS_ACCEL*50;
@@ -85,15 +85,15 @@ function game_updateMovement(_tick){
 				box1.vX+=PHYSICS_ACCEL*50;
 			}
 		}
-		box1.vY+=PHYSICS_ACCEL*(DRIFT_TO_Y-box1.y-box1.height/2);
-	}else{
+		box1.vY+=PHYSICS_ACCEL*(DRIFT_TO_Y-box1.y-box1.height/2);*/
+	//}else{
 		if (keyStates.left){
 			box1.vX-=PHYSICS_ACCEL*50;
 		}else if (keyStates.right){
 			box1.vX+=PHYSICS_ACCEL*50;
 		}
 		box1.vY+=PHYSICS_ACCEL*(DRIFT_TO_Y-box1.y-box1.height/2);
-	}
+//	}
 	
 }
 

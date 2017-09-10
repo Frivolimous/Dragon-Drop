@@ -4,11 +4,16 @@ var app = new PIXI.Application(STAGE_WIDTH,STAGE_HEIGHT,{backgroundColor:0x00000
 document.getElementById("game-canvas").append(app.view);
 
 //== Initialize Variables for use ==\\
+var mouseObjects=new Array();
+
 var mouse={x:0,y:0,down:false};
 var keyCodes={left:"a",right:"d"};
 var keyStates={left:false,right:false};
 
-var interactionMode="mobile";
+
+//keybard, mobile, mouse
+
+var interactionMode="keyboard";
 
 var stageBorders=collision_rect(0,0,STAGE_WIDTH,STAGE_HEIGHT);
 
@@ -46,13 +51,33 @@ function resetMouse(){
 	//mouseDown=false;
 }
 function onMouseDown(e){
+	var mouseObject=mouseObject_constructor();
+	mouseObject.id=e.pointerID;
+	mouseObject.down=true;
+	if (e.x<stageBorders.right/2){
+		mouseObject.key="a";
+	}else{
+		mouseObject.key="d";
+	}
+	for (var i=0;i<mouseObjects.length;i+=1){
+		if (mouseObjects[i].key==mouseObject.key) return;
+	}
+	onKeyDown(mouseObject);
+	mouseObjects.push(mouseObject);
 	mouse.down=true;
 	//trace(e.target.cursor=="pointer");
 	traceProperties(e);
 	trace(e.type);
 }
 
-function onMouseUp(){
+function onMouseUp(e){
+	for (var i=0;i<mouseObjects.length;i+=1){
+		if (mouseObjects[i].id==e.pointerID){
+			onKeyUp(mouseObjects[i]);
+			mouseObjects.splice(i,1);
+			return;
+		}
+	}
 	mouse.down=false;
 }
 
@@ -79,6 +104,18 @@ function onKeyUp(e){
 		case keyCodes.left: keyStates.left=false; break;
 		case keyCodes.right: keyStates.right=false; break;
 	}
+}
+
+function mouseObject_constructor(){
+	var m={
+		id:0,
+		x:0,
+		y:0,
+		down:false,
+		key:0
+	}
+
+	return m;
 }
 
 //var key={};

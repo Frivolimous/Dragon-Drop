@@ -16,10 +16,10 @@ const OBSTACLE_SPAWN=70;
 const TILE_WIDTH=20;
 const TILE_HEIGHT=40;
 //traceProperties(window);
-var STAGE_WIDTH=window.innerWidth;
-var STAGE_HEIGHT=window.innerHeight;
-//var STAGE_WIDTH=550;
-//var STAGE_HEIGHT=550;
+//var STAGE_WIDTH=window.innerWidth;
+//var STAGE_HEIGHT=window.innerHeight;
+var STAGE_WIDTH=550;
+var STAGE_HEIGHT=550;
 
 var TILES_ACROSS=STAGE_WIDTH/TILE_WIDTH;
 var TILES_DOWN=STAGE_HEIGHT/TILE_HEIGHT;
