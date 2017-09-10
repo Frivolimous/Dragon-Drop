@@ -51,6 +51,7 @@ function resetMouse(){
 	//mouseDown=false;
 }
 function onMouseDown(e){
+	if (interactionMode=="keyboard") return;
 	var mouseObject=mouseObject_constructor();
 	mouseObject.id=e.pointerId;
 	mouseObject.down=true;
@@ -71,6 +72,7 @@ function onMouseDown(e){
 }
 
 function onMouseUp(e){
+	if (interactionMode=="keyboard") return;
 	for (var i=0;i<mouseObjects.length;i+=1){
 		if (mouseObjects[i].id==e.pointerId){
 			onKeyUp(mouseObjects[i]);
