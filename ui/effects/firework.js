@@ -4,38 +4,38 @@ var FIREWORK_START_V_Y=1;
 var FIREWORK_START_V_X=1;
 var FIREWORK_NUM_PARTS=50;
 
-
 var firework_particles=new Array();
-var initialized=false;
+var firework_initialized=false;
 
-function firework_init(div){
-	if (div!=null){
-		if (div.gravity!=null) FIREWORK_GRAVITY=div.gravity;
-		if (div.fade!=null) FIREWORK_FADE=div.fade;
-		if (div.startVY!=null) FIREWORK_START_V_Y=div.startVY;
-		if (div.startVX!=null) FIREWORK_START_V_X=div.startVX;
-		if (div.numParts!=null) FIREWORK_NUM_PARTS=div.numParts;
+function firework_init(par){
+	if (par!=null){
+		if (par.gravity!=null) FIREWORK_GRAVITY=par.gravity;
+		if (par.fade!=null) FIREWORK_FADE=par.fade;
+		if (par.startVY!=null) FIREWORK_START_V_Y=par.startVY;
+		if (par.startVX!=null) FIREWORK_START_V_X=par.startVX;
+		if (par.numParts!=null) FIREWORK_NUM_PARTS=par.numParts;
 	}
 	app.ticker.add(firework_fade);
-	initialized=true;
+	firework_initialized=true;
 }
 
-function firework_constructor(div){
-	if (!initialized) firework_init();
+function firework_constructor(par){
+	if (!firework_initialized) firework_init();
 
-	if (div==null) div={};
+	if (par==null) par={};
 	
 
-	if (div.x==null) div.x=0;
-	if (div.y==null) div.y=0;
-	if (div.color==null) div.color=0xffffff;
-	if (div.gravity==null) div.gravity=FIREWORK_GRAVITY;
-	if (div.fade==null) div.fade=FIREWORK_FADE;
-	if (div.startVX==null) div.startVX=FIREWORK_START_V_X;
-	if (div.startVY==null) div.startVY=FIREWORK_START_V_Y;
-	if (div.numParts==null) div.numParts=FIREWORK_NUM_PARTS;
-	for (var i=0;i<div.numParts;i+=1){
-		firework_particle(div);
+	if (par.x==null) par.x=0;
+	if (par.y==null) par.y=0;
+	if (par.color==null) par.color=0xffffff;
+	if (par.gravity==null) par.gravity=FIREWORK_GRAVITY;
+	if (par.fade==null) par.fade=FIREWORK_FADE;
+	if (par.startVX==null) par.startVX=FIREWORK_START_V_X;
+	if (par.startVY==null) par.startVY=FIREWORK_START_V_Y;
+	if (par.numParts==null) par.numParts=FIREWORK_NUM_PARTS;
+	if (par.addTo==null) par.addTo=app.stage;
+	for (var i=0;i<par.numParts;i+=1){
+		firework_particle(par);
 	}
 }
 
@@ -53,17 +53,17 @@ function firework_fade(){
 	}
 }
 
-function firework_particle(div){
+function firework_particle(par){
 	var m=new PIXI.Graphics();
-	//m.beginFill(div.color);
-	m.lineStyle(1,div.color);
-	m.drawCircle(div.x,div.y,1+Math.random()*2);
-	m.gravity=div.gravity;
-	m.fade=div.fade;
-	m.vX=Math.random()*div.startVX-div.startVX/2;
-	m.vY=0-Math.random()*div.startVY;
+	//m.beginFill(par.color);
+	m.lineStyle(1,par.color);
+	m.drawCircle(par.x,par.y,1+Math.random()*2);
+	m.gravity=par.gravity;
+	m.fade=par.fade;
+	m.vX=Math.random()*par.startVX-par.startVX/2;
+	m.vY=0-Math.random()*par.startVY;
 //	m.alpha=0.7+0.3*Math.random();
 	firework_particles.push(m);
-	app.stage.addChild(m);
+	par.addTo.addChild(m);
 	return m;
 }

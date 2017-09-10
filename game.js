@@ -70,12 +70,34 @@ function game_onTick(){
 	
 	game_tickSpawner(obstacleSpeed);
 	game_updateScore(obstacleSpeed);
+	game_updateMovement(obstacleSpeed);
 	game_updateSprites(obstacleSpeed);
 	starfield.tick(obstacleSpeed);
 }
 
+function game_updateMovement(_tick){
+	//box1.pullTo(mouse.x,DRIFT_TO_Y); // Mouse Controls
+	if (interactionMode=="mobile"){
+		if (mouse.down){
+			if (mouse.x<stageBorders.right/2){
+				box1.vX-=PHYSICS_ACCEL*50;
+			}else{
+				box1.vX+=PHYSICS_ACCEL*50;
+			}
+		}
+		box1.vY+=PHYSICS_ACCEL*(DRIFT_TO_Y-box1.y-box1.height/2);
+	}else{
+		if (keyStates.left){
+			box1.vX-=PHYSICS_ACCEL*50;
+		}else if (keyStates.right){
+			box1.vX+=PHYSICS_ACCEL*50;
+		}
+		box1.vY+=PHYSICS_ACCEL*(DRIFT_TO_Y-box1.y-box1.height/2);
+	}
+	
+}
+
 function game_updateSprites(_tick){
-	box1.pullTo(mouse.x,DRIFT_TO_Y);
 	box1.update();
 	game_makeTrail(box1);
 
@@ -101,7 +123,7 @@ function game_updateSprites(_tick){
 		game_drag.vX+=PHYSICS_OBS_ACCEL*(mouse.x+game_drag_offX-game_drag.x);
 		game_drag.vX=Math.min(PHYSICS_OBS_MAX_V,Math.max(-PHYSICS_OBS_MAX_V,game_drag.vX));
 
-		if (!mouseDown) game_drag=null;
+		if (!mouse.down) game_drag=null;
 	}
 }
 
@@ -162,8 +184,18 @@ function game_removeObstacle(i){
 function game_makeObstacleDraggable(_obstacle){
 	_obstacle.interactive=true;
 	_obstacle.buttonMode=true;
-	_obstacle.on("pointerdown",function(){game_drag=_obstacle;game_drag_offX=game_drag.x-mouse.x;})
-	_obstacle.on("pointerup",function(){if (game_drag===_obstacle) game_drag=null})
+	_obstacle.on("pointerdown",function(){
+		if (mouse.x<_obstacle.x+_obstacle.width/2){
+			_obstacle.vX=30;
+		}else{
+			_obstacle.vX=-30;
+		}
+		//game_drag=_obstacle;
+		//game_drag_offX=game_drag.x-mouse.x;
+	})
+	_obstacle.on("pointerup",function(){
+		//if (game_drag===_obstacle) game_drag=null
+	})
 }
 
 function game_tilesToPixels(i){

@@ -5,17 +5,6 @@ function box_construct(_width,_height,_color){
 	return m;
 }
 
-function box_template(){
-	var m=new PIXI.Graphics();
-	m.update=function (){box_update(m)};
-	m.hitTest=function(_box2){return box_hitTest(m,_box2)};
-	m.hitTestAndStop=function(_box2){box_hitTestAndStop(m,_box2)};
-	m.hitTestBorders=function(_borders){return box_hitBordersAndStop(m,_borders)};
-	m.pullTo=function(_x,_y){box_pullTo(m,_x,_y)}
-	m.bonded=null;
-	return m;
-}
-
 function box_gameBox(_color=0x3366ff){
 	var m=box_template();
 	m.lineStyle(3,_color);
@@ -41,7 +30,20 @@ function box_obstacleBox(_width,_color=0xff0000){
 	return m;
 }
 
+function box_template(){
+	var m=new PIXI.Graphics();
+	m.update=function (){box_update(m)};
+	m.hitTest=function(_box2){return box_hitTest(m,_box2)};
+	m.hitTestAndStop=function(_box2){box_hitTestAndStop(m,_box2)};
+	m.hitTestBorders=function(_borders){return box_hitBordersAndStop(m,_borders)};
+	m.pullTo=function(_x,_y){box_pullTo(m,_x,_y)}
+	return m;
+}
+
 function box_update(_box){
+	_box.vX=Math.min(PHYSICS_MAX_V_X,Math.max(-PHYSICS_MAX_V_X,_box.vX));
+	_box.vY=Math.min(PHYSICS_MAX_V_Y,Math.max(-PHYSICS_MAX_V_Y,_box.vY));
+	
 	_box.x+=_box.vX;
 	_box.y+=_box.vY;
 	_box.vX*=PHYSICS_FRICTION;
@@ -62,11 +64,6 @@ function box_hitTestAndStop(_box1,_box2){
 			case 2:_box1.x+=_collision.xOverlap; break;
 			case 3:_box1.y+=_collision.yOverlap; break;
 		}
-		_box1.bonded=_box2;
-		_box2.bonded=_box1;
-	}else{
-		_box1.bonded=null;
-		_box2.bonded=null;
 	}
 }
 
@@ -88,9 +85,6 @@ function box_hitBordersAndStop(_box,_borders){
 function box_pullTo(_box,_x,_y){
 	_box.vX+=PHYSICS_ACCEL*(_x-_box.x-_box.width/2);
 	_box.vY+=PHYSICS_ACCEL*(_y-_box.y-_box.height/2);
-
-	_box.vX=Math.min(PHYSICS_MAX_V_X,Math.max(-PHYSICS_MAX_V_X,_box.vX));
-	_box.vY=Math.min(PHYSICS_MAX_V_Y,Math.max(-PHYSICS_MAX_V_Y,_box.vY));
 }
 
 

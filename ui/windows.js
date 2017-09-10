@@ -15,7 +15,7 @@ function window_construct_lose(_closeFunction){
 
 function window_construct_start(_closeFunction){
 	var m=uiElement_constructor({
-		label:"             Dragon Drop\n\nMove around but down touch\nthe ground!\nDrag green blocks to move them!",
+		label:"             Dragon Drop\n\nMove around but down touch\nthe ground!\nTap the green obstacles to\nmove them.",
 		width:400,
 		height:400,
 		//clickFunction:function(){removeThis(m)},
