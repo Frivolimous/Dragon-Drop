@@ -19,7 +19,7 @@ function game_init(){
 	background=box_construct(stageBorders.right,stageBorders.bot,0x060606);
 	//background=ImageBitmap.createImageBitmap();
 	starfield=starfield_construct({width:stageBorders.right,height:stageBorders.bot});
-	score=new PIXI.Text("v1.1",{
+	score=new PIXI.Text("v1.2",{
 			fill:"0xffffff"
 		});
 
