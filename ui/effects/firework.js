@@ -57,7 +57,9 @@ function firework_particle(par){
 	var m=new PIXI.Graphics();
 	//m.beginFill(par.color);
 	m.lineStyle(1,par.color);
-	m.drawCircle(par.x,par.y,1+Math.random()*2);
+	m.drawCircle(0,0,1+Math.random()*2);
+	m.x=par.x;
+	m.y=par.y;
 	m.gravity=par.gravity;
 	m.fade=par.fade;
 	m.vX=Math.random()*par.startVX-par.startVX/2;

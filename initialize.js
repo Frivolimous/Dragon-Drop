@@ -1,5 +1,13 @@
 
 //== Main Initialization ==\\
+try{
+	document.createEvent("TouchEvent");
+	interactionMode="mobile";
+	STAGE_WIDTH=window.innerWidth;
+	STAGE_HEIGHT=window.innerHeight;
+}catch(e){
+	interactionMode="keyboard";
+}
 var app = new PIXI.Application(STAGE_WIDTH,STAGE_HEIGHT,{backgroundColor:0x000000});
 document.getElementById("game-canvas").append(app.view);
 
@@ -9,7 +17,7 @@ var mouseObjects=new Array();
 var mouse={x:0,y:0,down:false};
 var keyCodes={left:"a",right:"d"};
 var keyStates={left:false,right:false};
-
+var NO_SPAWN=false;
 
 //keybard, mobile, mouse
 
@@ -18,12 +26,7 @@ var interactionMode="keyboard";
 var stageBorders=collision_rect(0,0,STAGE_WIDTH,STAGE_HEIGHT);
 
 //== Initialize Supporting Structures ==\\
-try{
-	document.createEvent("TouchEvent");
-	interactionMode="mobile";
-}catch(e){
-	interactionMode="keyboard";
-}
+
 app.stage.interactive=true;
 /*app.stage.on("mousedown",onMouseDown);
 app.stage.on("mouseup",onMouseUp);
@@ -103,6 +106,7 @@ function onKeyDown(e){
 	switch(e.key){
 		case keyCodes.left: keyStates.left=true; break;
 		case keyCodes.right: keyStates.right=true; break;
+		case "p": NO_SPAWN=!NO_SPAWN; break;
 	}
 	//traceProperties(e);
 	//trace(e.key);

@@ -130,10 +130,10 @@ function game_updateSprites(_tick){
 function game_makeTrail(_obj){
 	var _tColor=0x33+Math.floor(0x66*Math.random());
 	firework_constructor({
-		x:_obj.x+_obj.width/2,
+		x:_obj.x+_obj.width/2-2,
 		y:_obj.y+_obj.height,
 		numParts:1,
-		startVY:-1,
+		startVY:-1.5,
 		fade:0.05,
 		color:0x0000ff+_tColor*0x000100+_tColor*0x010000,
 	});
@@ -156,6 +156,7 @@ function game_tickSpawner(_tick){
 //== Object Functions ==\\
 
 function game_addObstacle(){
+	if (NO_SPAWN) return; 
 	switch(Math.floor(Math.random()*5)){
 		case 0: _obstacle=box_obstacleBox(game_tilesToPixels(Math.floor((1+Math.random())*TILES_ACROSS)/2),0x00ff00);
 				game_makeObstacleDraggable(_obstacle);

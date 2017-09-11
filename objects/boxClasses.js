@@ -9,7 +9,13 @@ function box_gameBox(_color=0x3366ff){
 	var m=box_template();
 	m.lineStyle(3,_color);
 	m.beginFill(_color,0.15);
-	m.drawCircle(TILE_WIDTH/2,TILE_WIDTH/2,TILE_WIDTH/2);
+	m.moveTo(0,TILE_WIDTH);
+	m.lineTo(TILE_WIDTH/2,0);
+	m.lineTo(TILE_WIDTH,TILE_WIDTH);
+	m.lineTo(TILE_WIDTH/2,TILE_WIDTH*4/5);
+	m.lineTo(0,TILE_WIDTH);
+	m.endFill();
+	//m.drawCircle(TILE_WIDTH/2,TILE_WIDTH/2,TILE_WIDTH/2);
 	//m.drawCircle(TILE_WIDTH/4,TILE_WIDTH/4,TILE_WIDTH/2,TILE_WIDTH/2);
 	m.vX=0;
 	m.vY=0;
@@ -43,7 +49,7 @@ function box_template(){
 function box_update(_box){
 	_box.vX=Math.min(PHYSICS_MAX_V_X,Math.max(-PHYSICS_MAX_V_X,_box.vX));
 	_box.vY=Math.min(PHYSICS_MAX_V_Y,Math.max(-PHYSICS_MAX_V_Y,_box.vY));
-	
+
 	_box.x+=_box.vX;
 	_box.y+=_box.vY;
 	_box.vX*=PHYSICS_FRICTION;
