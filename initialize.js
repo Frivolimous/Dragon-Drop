@@ -1,5 +1,6 @@
 
 //== Main Initialization ==\\
+var interactionMode="keyboard";
 try{
 	document.createEvent("TouchEvent");
 	interactionMode="mobile";
@@ -21,7 +22,7 @@ var NO_SPAWN=false;
 
 //keybard, mobile, mouse
 
-var interactionMode="keyboard";
+
 
 var stageBorders=collision_rect(0,0,STAGE_WIDTH,STAGE_HEIGHT);
 
