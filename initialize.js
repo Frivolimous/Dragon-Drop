@@ -19,6 +19,8 @@ var mouse={x:0,y:0,down:false};
 var keyCodes={left:"a",right:"d"};
 var keyStates={left:false,right:false};
 var NO_SPAWN=false;
+var NO_STARS=false;
+var NO_FIREWORKS=false;
 
 //keybard, mobile, mouse
 

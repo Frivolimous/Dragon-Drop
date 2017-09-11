@@ -35,6 +35,19 @@ function game_init(){
 
 	running=false;
 	app.stage.addChild(window_construct_start(startGame));
+
+	var _button=button_constructBasic("spawn",function(){NO_SPAWN=!NO_SPAWN});
+_button.x=50;
+_button.y=0;
+app.stage.addChild(_button);
+_button=button_constructBasic("stars",function(){NO_STARS=!NO_STARS});
+_button.x=260;
+_button.y=0;
+app.stage.addChild(_button);
+_button=button_constructBasic("engine",function(){NO_FIREWORKS=!NO_FIREWORKS});
+_button.x=470;
+_button.y=0;
+app.stage.addChild(_button);
 }
 
 //== Start/Stop the Game ==\\
@@ -59,7 +72,7 @@ function game_lose(){
 	running=false;
 	app.stage.addChild(window_construct_lose(startGame));
 	box1.visible=false;
-	firework_constructor({x:box1.x+box1.width/2,y:box1.y+box1.height/2,color:0x3366ff});
+	if (!NO_FIREWORKS) firework_constructor({x:box1.x+box1.width/2,y:box1.y+box1.height/2,color:0x3366ff});
 }
 
 //==Primary Game Loop==\\
@@ -72,7 +85,7 @@ function game_onTick(){
 	game_updateScore(obstacleSpeed);
 	game_updateMovement(obstacleSpeed);
 	game_updateSprites(obstacleSpeed);
-	starfield.tick(obstacleSpeed);
+	if (!NO_STARS) starfield.tick(obstacleSpeed);
 }
 
 function game_updateMovement(_tick){
@@ -129,7 +142,7 @@ function game_updateSprites(_tick){
 
 function game_makeTrail(_obj){
 	var _tColor=0x33+Math.floor(0x66*Math.random());
-	firework_constructor({
+	if (!NO_FIREWORKS) firework_constructor({
 		x:_obj.x+_obj.width/2-2,
 		y:_obj.y+_obj.height,
 		numParts:1,
