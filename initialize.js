@@ -18,16 +18,22 @@ var interactionMode="keyboard";
 var stageBorders=collision_rect(0,0,STAGE_WIDTH,STAGE_HEIGHT);
 
 //== Initialize Supporting Structures ==\\
+try{
+	document.createEvent("TouchEvent");
+	interactionMode="mobile";
+}catch(e){
+	interactionMode="keyboard";
+}
 app.stage.interactive=true;
 /*app.stage.on("mousedown",onMouseDown);
 app.stage.on("mouseup",onMouseUp);
 *///app.ticker.add(resetMouse);
+
 window.addEventListener("keydown",onKeyDown)
 window.addEventListener("keyup",onKeyUp)
 window.addEventListener("pointerdown",onMouseDown);
 window.addEventListener("pointerup",onMouseUp);
 window.addEventListener("pointermove",onMouseMove);
-
 //== Initialize the game after everything is setup ==\\
 game_init();
 
@@ -51,6 +57,7 @@ function resetMouse(){
 	//mouseDown=false;
 }
 function onMouseDown(e){
+	//trace(e.pointerId);
 	if (interactionMode=="keyboard") return;
 	var mouseObject=mouseObject_constructor();
 	mouseObject.id=e.pointerId;
@@ -66,6 +73,7 @@ function onMouseDown(e){
 	onKeyDown(mouseObject);
 	mouseObjects.push(mouseObject);
 	mouse.down=true;
+
 	//trace(e.target.cursor=="pointer");
 //	traceProperties(e);
 //	trace(e.type);
