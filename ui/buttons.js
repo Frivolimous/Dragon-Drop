@@ -11,3 +11,15 @@ function button_constructBasic(_label,_function){
 	m.buttonMode=true;
 	return m;
 }
+
+function button_clearButton(_function){
+	var m=uiElement_constructor({
+		bgColor:0x00ff00,
+		clickFunction:_function,
+		alpha:0.05,
+		width:190,
+		height:50
+	});
+	m.buttonMode=true;
+	return m;
+}

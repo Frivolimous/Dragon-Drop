@@ -26,5 +26,6 @@ function uiElement_constructor(_properties){
 	}
 	if (_properties.x!=null) m.x=_properties.x;
 	if (_properties.y!=null) m.y=_properties.y;
+	if (_properties.alpha!=null) m.alpha=_properties.alpha;
 	return m;
 }

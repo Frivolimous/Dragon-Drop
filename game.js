@@ -36,18 +36,21 @@ function game_init(){
 	running=false;
 	app.stage.addChild(window_construct_start(startGame));
 
-	var _button=button_constructBasic("spawn",function(){NO_SPAWN=!NO_SPAWN});
-_button.x=50;
-_button.y=0;
-app.stage.addChild(_button);
-_button=button_constructBasic("stars",function(){NO_STARS=!NO_STARS});
-_button.x=260;
-_button.y=0;
-app.stage.addChild(_button);
-_button=button_constructBasic("engine",function(){NO_FIREWORKS=!NO_FIREWORKS});
-_button.x=470;
-_button.y=0;
-app.stage.addChild(_button);
+	//var _button=button_constructBasic("spawn",function(){NO_SPAWN=!NO_SPAWN});
+	var _button=button_clearButton(function(){NO_SPAWN=!NO_SPAWN});
+	_button.x=50;
+	_button.y=0;
+	app.stage.addChild(_button);
+	_button=button_clearButton(function(){NO_STARS=!NO_STARS});
+	//_button=button_constructBasic("stars",function(){NO_STARS=!NO_STARS});
+	_button.x=260;
+	_button.y=0;
+	app.stage.addChild(_button);
+	//_button=button_constructBasic("engine",function(){NO_FIREWORKS=!NO_FIREWORKS});
+	_button=button_clearButton(function(){NO_FIREWORKS=!NO_FIREWORKS});
+	_button.x=470;
+	_button.y=0;
+	app.stage.addChild(_button);
 }
 
 //== Start/Stop the Game ==\\
@@ -146,8 +149,9 @@ function game_makeTrail(_obj){
 		x:_obj.x+_obj.width/2-2,
 		y:_obj.y+_obj.height,
 		numParts:1,
-		startVY:-1.5,
+		startVY:-2,
 		fade:0.05,
+		gravity:0,
 		color:0x0000ff+_tColor*0x000100+_tColor*0x010000,
 	});
 }
