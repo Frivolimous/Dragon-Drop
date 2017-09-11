@@ -14,7 +14,7 @@ document.getElementById("game-canvas").append(app.view);
 
 //== Initialize Variables for use ==\\
 var mouseObjects=new Array();
-
+//var mouse=app
 var mouse={x:0,y:0,down:false};
 var keyCodes={left:"a",right:"d"};
 var keyStates={left:false,right:false};
@@ -63,6 +63,7 @@ function resetMouse(){
 	//mouseDown=false;
 }
 function onMouseDown(e){
+	//traceProperties(app.renderer);
 	//trace(e.pointerId);
 	if (interactionMode=="keyboard") return;
 	var mouseObject=mouseObject_constructor();
@@ -100,6 +101,7 @@ function onMouseUp(e){
 function onMouseMove(e){
 	mouse.x=e.x;
 	mouse.y=e.y;
+	//trace(e.tiltX+" "+e.screenX+" "+e.pageX+" "+e.clientX+" "+e.layerX);
 	//	trace(i);
 	
 	//trace(e.list);

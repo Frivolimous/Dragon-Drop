@@ -202,7 +202,9 @@ function game_removeObstacle(i){
 function game_makeObstacleDraggable(_obstacle){
 	_obstacle.interactive=true;
 	_obstacle.buttonMode=true;
+
 	_obstacle.on("pointerdown",function(){
+		trace(mouse.x+" "+_obstacle.x);
 		if (mouse.x<_obstacle.x+_obstacle.width/2){
 			_obstacle.vX=30;
 		}else{
